@@ -7,7 +7,8 @@ Back then I thought that java webstart was a good solution to the deployment pro
 
 The engine works great (as designed / within its limits) but it's the result of two weeks of unprincipled fiddling, by which I mean that it has no rigorous theoretical foundation.
 
-# What's next?
+# The code
 
-1. Before I push up things here I'm gonna check if there are any license issues with the JOGL or any other components. If so I'll drop them as well.
-2. Push up a working current state.
+The folder eclipse-projects can be used as an eclipse workspace. It contains the engine and the UI project. The latter contains some native binaries for 64bit Windows (only).
+
+Unfortunately, the code is commented in german. I'll try to find time to translate them.
