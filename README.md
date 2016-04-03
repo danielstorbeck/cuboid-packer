@@ -10,6 +10,6 @@ The engine works great (as designed / within its limits) but it's the result of 
 
 The folder eclipse-projects can be used as an eclipse workspace. It contains the engine and the UI project. The latter contains some native binaries for 64bit windows (only).
 
-Unfortunately, the code is commented in german. I'll try to find time to translate the comments to english.
+Unfortunately, the engine code is commented in german. I'll try to find time to translate the comments to english.
 
 To sum up, if you have worked with java and eclipse before and have a 64bit windows you should be able to get it up and running in a few minutes.
