@@ -3,67 +3,115 @@ package box;
 import java.util.Arrays;
 
 /**
- * Stellt die Ausmaße eines Quaders dar.
- * Prüft auf Enthaltensein.
- * Prüft, ob Volumen größer null.
- * Quader hat ID. 
+ * Represents the dimensions of a cuboid.
+ * They are sorted for practical purposes: [a, b, c]
+ * where a <= b <= c.
+ * A copy of the unsorted original dimensions is kept.
  */
-public class OrdDims {
-	
-	// Seitenlängen in der Folge, wie sie übergeben wurden.
-    protected float[] dims = new float[3];
-    // Seitenlängen sortiert.
-    protected float[] oDims = new float[3];
-    
+public class OrderedDimensions {
+
+    // original dimensions, before sorting
+    protected float[] origDims = new float[3];
+    // sorted dimensions
+    protected float[] sortedDims = new float[3];
+    // an ID
     int id = -1;
-    
-    // Übergebenes Tripel kopieren.
-    public OrdDims(float[] d) {
-        System.arraycopy(d, 0, dims, 0, 3);
-        // Eine Kopie sortieren.
-        System.arraycopy(d, 0, oDims, 0, 3);
-        orderDims();
-    }
-    
-    protected void orderDims() {
-    	Arrays.sort(oDims);
-    }
-    
-    // Passt der Quader in einen anderen?
-    public boolean fitsIn(OrdDims that) {
-        if (this.oDims[0] <= that.oDims[0]
-                && this.oDims[1] <= that.oDims[1]
-                && this.oDims[2] <= that.oDims[2])
-            return true;
-        else return false;
-    }
-    
-    // Volumen größer null?
-    public boolean isNonZero() {
-        if (dims[0] > 0 && dims[1] > 0 && dims[2] > 0)
-            return true;
-        else return false;
+
+    /**
+     * Constructor
+     * 
+     * Makes a copy of the dimensions.
+     * Then makes another copy which is sorted.
+     * 
+     * @param orig original triplet of cuboid dimensions
+     */
+    public OrderedDimensions(float[] orig) {
+        // copy original
+        System.arraycopy(orig, 0, origDims, 0, 3);
+        // another copy to be sorted
+        System.arraycopy(orig, 0, sortedDims, 0, 3);
+        sortDimensions();
     }
 
-    // Kopie des originalen Tripels rausgeben.
-    public float[] getDims() {
-        return new float[] {dims[0], dims[1], dims[2]};
+    /**
+     * Sorts the copy of the dimensions.
+     */
+    protected void sortDimensions() {
+    	Arrays.sort(sortedDims);
     }
-    
-    // Tripel in Druckform.
-    // TODO Warum nicht toString implementieren?
-    public String printDimensions() {
-        return "" + dims[0] + ", " + dims[1] + ", " + dims[2];
+
+    /**
+     * Determines if a cuboid fits into another cuboid.
+     *
+     * @param that other cuboid
+     * @return truth value
+     */
+    public boolean fitsIn(OrderedDimensions that) {
+        if (this.sortedDims[0] <= that.sortedDims[0]
+                && this.sortedDims[1] <= that.sortedDims[1]
+                && this.sortedDims[2] <= that.sortedDims[2]) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    
-    // Kopie des sortierten Tripels.
-    public float[] getOrdDims() {
-        return new float[] {oDims[0], oDims[1], oDims[2]};
+
+    /**
+     * Determines if the volume of a cuboid is greater zero.
+     * 
+     * @return truth value
+     */
+    public boolean isNonZero() {
+        if (origDims[0] > 0 && origDims[1] > 0 && origDims[2] > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    
+
+    /**
+     * Return a copy of the original dimensions.
+     *
+     * @return copy of original dimensions
+     */
+    public float[] getOrigDimsCopy() {
+        return new float[] {origDims[0], origDims[1], origDims[2]};
+    }
+
+    /**
+     * Print original dimensions.
+     * 
+     * FIXME Implement toString instead?
+     * 
+     * @return string representation of original dimensions
+     */
+    public String printOriginalDimensions() {
+        return "" + origDims[0] + ", " + origDims[1] + ", " + origDims[2];
+    }
+
+    /**
+     * Return a copy of the sorted dimensions.
+     *
+     * @return copy of sorted dimensions
+     */
+    public float[] getSortedDimsCopy() {
+        return new float[] {sortedDims[0], sortedDims[1], sortedDims[2]};
+    }
+
+    /**
+     * Set ID of cuboid.
+     * 
+     * @param i given ID
+     */
     public void setID(int i) {
         id = i;
     }
+
+    /**
+     * Get ID of cuboid.
+     * 
+     * @return ID of cuboid
+     */
     public int getID() {
         return id;
     }

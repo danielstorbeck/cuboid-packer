@@ -1,26 +1,49 @@
 package store;
 
-import box.OrdDims;
+import box.OrderedDimensions;
 
 /**
- * Stellt einen situierten bzw. im Kontainer positionierten
- * Quader dar. Gebildet aus einem situierten Punkt und
- * den Dimensionen.
+ * A cuboid that is situated in a container.
+ * It has an origin (a point with x, y and z coordinates)
+ * and a set of dimensions.
  */
-public class SituBox extends OrdDims {
+public class SituatedBox extends OrderedDimensions {
 	
-    float[] ori = new float[3];
-    
-    public SituBox(float[] dm, float[] og) {
-        super(dm);
-        System.arraycopy(og, 0, ori, 0, 3);
+    float[] origin = new float[3];
+
+    /**
+     * Constructor
+     * 
+     * Makes a copy of origin and dimensions
+     * 
+     * @param dimensions original dimensions
+     * @param origin point of origin
+     */
+    public SituatedBox(float[] dimensions, float[] origin) {
+        super(dimensions);
+        System.arraycopy(origin, 0, this.origin, 0, 3);
     }
-    
+
+    /**
+     * Get the point of origin.
+     * 
+     * FIXME Why not return a copy?
+     * The base class returns a copy of the dimensions.
+     * 
+     * @return point of origin
+     */
     public float[] getOrigin() {
-        return ori;
+        return origin;
     }
-    
+
+    /**
+     * Print the point of oirigin.
+     * 
+     * FIXME Why not implement toString?
+     * 
+     * @return string representing the point of origin
+     */
     public String printOrigin() {
-        return "" + ori[0] + ", " + ori[1] + ", " + ori[2];
+        return "" + origin[0] + ", " + origin[1] + ", " + origin[2];
     }
 }
