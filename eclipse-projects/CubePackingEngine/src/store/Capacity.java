@@ -1,6 +1,6 @@
 package store;
 
-import box.OrdDims;
+import box.OrderedDimensions;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.SortedSet;
@@ -29,7 +29,7 @@ public class Capacity extends Cuboid {
         updateFreeCuboids();
     }
     
-    // Sammelt die z-Koordinaten aller x-y-Flächen ein, aus denen
+    // Sammelt die z-Koordinaten aller x-y-FlÃ¤chen ein, aus denen
     // der Kontainer besteht sowie die aller enthaltenen belegten
     // Quader.
     SortedSet<Float> getAllZValues() {
@@ -42,7 +42,7 @@ public class Capacity extends Cuboid {
     }
     
     // Der Kontainer und alle belegten Quader geben diejenigen
-    // ihrer x-y-Flächen in eine Liste, die auf der angegebenen
+    // ihrer x-y-FlÃ¤chen in eine Liste, die auf der angegebenen
     // z-Ebene liegen.
     List<Face> getFacesOnLevel(float z) {
         List<Face> lf = new ArrayList<Face>();
@@ -54,31 +54,31 @@ public class Capacity extends Cuboid {
     }
     
     // Aufwendigste Funktion des Programms:
-    // Die begrenzenden Geraden der x-y-Flächen der situierten
-    // Quader werden eingesammelt. Daraus werden alle möglichen
+    // Die begrenzenden Geraden der x-y-FlÃ¤chen der situierten
+    // Quader werden eingesammelt. Daraus werden alle mÃ¶glichen
     // Kombinationen von zwei x- und zwei y-Geraden erzeugt,
-    // um Flächen zu erzeugen. Für jede der Flächen wird geprüft,
+    // um FlÃ¤chen zu erzeugen. FÃ¼r jede der FlÃ¤chen wird geprÃ¼ft,
     // ob sie von einem der situierten Quader blockiert wird.
     List<Face> getFreeFacesOnLevel(float z) {
-        // Alle vorhandenen Flächen auf der angegebenen z-Ebene.
+        // Alle vorhandenen FlÃ¤chen auf der angegebenen z-Ebene.
         List<Face> lf = getFacesOnLevel(z);
         // TODO Das wird schon in getfacesonlevel aufgerufen.
         // Macht aber wohl keinen Unterschied, weil die
         // begrenzenden Geraden in einem Set landen.
         addZFaceOnLevelTo(z, lf);
         // Sammlung von x- und y-Geraden,
-        // die die vorhandenen Flächen begrenzen.
+        // die die vorhandenen FlÃ¤chen begrenzen.
         XYStraights xys = new XYStraights();
         for (Face f : lf) {
             f.addXYStraightsTo(xys);
         }
-        // Generieren aller möglichen Flächen,
+        // Generieren aller mÃ¶glichen FlÃ¤chen,
         // die von diesen Geraden begrenzt werden.
         List<Face> laf = xys.getAllFaces();
-        // Liste für freie Flächen, die eine Untermenge
-        // der generierten Flächen sind.
+        // Liste fÃ¼r freie FlÃ¤chen, die eine Untermenge
+        // der generierten FlÃ¤chen sind.
         List<Face> lff = new ArrayList<Face>();
-        // Test für alle generierten Flächen,
+        // Test fÃ¼r alle generierten FlÃ¤chen,
         for (Face f : laf) {
             boolean blocked = false;
             // ob sie von irgendeinem der situierten Quader
@@ -94,15 +94,15 @@ public class Capacity extends Cuboid {
         return lff;
     }
     
-    // Es wird eine Liste freier Quader zurück gegeben.
+    // Es wird eine Liste freier Quader zurÃ¼ck gegeben.
     // Die werden erzeugt, indem alle z-Ebenen im Kontainer
     // von unten nach oben durchiteriert werden, und von der
     // untersten der Ebenen aus versucht wird, ausgehend von
-    // freien Flächen der untersten Ebene, Quader nach oben
+    // freien FlÃ¤chen der untersten Ebene, Quader nach oben
     // hin so weit aufzuspannen, wie diese nicht von belegten
-    //  Flächen einer höheren Ebene blockiert werden.
+    //  FlÃ¤chen einer hÃ¶heren Ebene blockiert werden.
     void addFreeCuboidsAboveLevelTo(SortedSet<Float> zv, List<Cuboid> lc) {
-    	// Iteriert wird über die z-Ebenen.
+    	// Iteriert wird Ã¼ber die z-Ebenen.
         Iterator<Float> zi = zv.iterator();
         // Jeder der Werte ist einmal der Basis-z-Wert.
         Float bz;
@@ -110,26 +110,26 @@ public class Capacity extends Cuboid {
         if (!zi.hasNext()) return;
         // Initialer Basis-z-Wert.
         bz = zi.next();
-        // Es muss mindestens eine höhere z-Ebene geben.
+        // Es muss mindestens eine hÃ¶here z-Ebene geben.
         if (!zi.hasNext()) return;
-        // Freie Flächen auf der aktuellen Basis-z-Ebene.
+        // Freie FlÃ¤chen auf der aktuellen Basis-z-Ebene.
         List<Face> lbf = getFreeFacesOnLevel(bz);
-        // Iterieren über die nächsthöheren Ebenen.
+        // Iterieren Ã¼ber die nÃ¤chsthÃ¶heren Ebenen.
         while (zi.hasNext()) {
-        	// Aktuelle nächsthöhere Ebene.
+        	// Aktuelle nÃ¤chsthÃ¶here Ebene.
             Float cz = zi.next();
-            // Blockierende Flächen auf der nächsthöheren Ebene.
+            // Blockierende FlÃ¤chen auf der nÃ¤chsthÃ¶heren Ebene.
             List<Face> czf = getFacesOnLevel(cz);
-            // Für jede freie Fläche der Basis-z-Ebene,
+            // FÃ¼r jede freie FlÃ¤che der Basis-z-Ebene,
             for (Face bf : lbf) {
-            	// versuchen, auf der aktuellen nächsthöheren Ebene
-            	// eine blockierende Fläche zu finden. Letztendlich
-            	// ist das die obere Fläche des Kontainers, sofern
+            	// versuchen, auf der aktuellen nÃ¤chsthÃ¶heren Ebene
+            	// eine blockierende FlÃ¤che zu finden. Letztendlich
+            	// ist das die obere FlÃ¤che des Kontainers, sofern
             	// keine anderen dazwischen kommen.
                 for (Face cf : czf) {
                 	// Sobald eine gefunden wird, wird ein Quader von
-                	// der Basisfläche hoch bis zur blockierenden Fläche
-                	// aufgespannt und in die übergebene Liste gesteckt.
+                	// der BasisflÃ¤che hoch bis zur blockierenden FlÃ¤che
+                	// aufgespannt und in die Ã¼bergebene Liste gesteckt.
                     if (cf.intersectsXYWith(bf)) {
                         lc.add(Cuboid.createWith(bf.min,
                                 new Point(new float[] {bf.max.co[0], bf.max.co[1], cz})));
@@ -143,25 +143,25 @@ public class Capacity extends Cuboid {
     // Alle freien Quader des Kontainers generieren.
     List<Cuboid> getAllFreeCuboids() {
         List<Cuboid> afc = new ArrayList<Cuboid>();
-        // Für alle z-Ebenen, in denen sich x-y-Flächen
-        // belegter Quader befinden, inkl. x-y-Flächen
+        // FÃ¼r alle z-Ebenen, in denen sich x-y-FlÃ¤chen
+        // belegter Quader befinden, inkl. x-y-FlÃ¤chen
         // des Kontainers,
         SortedSet<Float> azv = getAllZValues();
         for (Float z : azv) {
         	// alle Quader generieren, die sich von den freien
-        	// Flächen der jeweiligen Ebene nach oben hin
-        	// aufspannen lassen, bis sie von darüber liegenden
-        	// Flächen oder letztendlich dem Kontainerdeckel
+        	// FlÃ¤chen der jeweiligen Ebene nach oben hin
+        	// aufspannen lassen, bis sie von darÃ¼ber liegenden
+        	// FlÃ¤chen oder letztendlich dem Kontainerdeckel
         	// blockiert werden.
             addFreeCuboidsAboveLevelTo(azv.tailSet(z), afc);
         }
         return afc;
     }
 
-    // Vom Packer aufgerufen, um die Ausmaße aller freien
+    // Vom Packer aufgerufen, um die AusmaÃŸe aller freien
     // Quader zu bekommen.
-    public List<OrdDims> getFreeDimensions() {
-        List<OrdDims> lfd = new ArrayList<OrdDims>();
+    public List<OrderedDimensions> getFreeDimensions() {
+        List<OrderedDimensions> lfd = new ArrayList<OrderedDimensions>();
         for (Cuboid fc : lfc)
             lfd.add(fc.getOrdDimsBox());
         return lfd;
@@ -176,35 +176,35 @@ public class Capacity extends Cuboid {
     // Es gibt eine Liste mit freien Quadern, die durchprobiert werden.
     // Die freien Quader werden nach jeder Platzierung neu generiert,
     // erstmalig jedoch im Konstruktor.
-    public SituBox add(OrdDims od) {
+    public SituatedBox add(OrderedDimensions od) {
     	// Alle freien Quader durchgehen und versuchen,
-    	// den übergebenen Quader zu situieren.
-        SituBox sb = null;
+    	// den Ã¼bergebenen Quader zu situieren.
+        SituatedBox sb = null;
         for (Cuboid fc : lfc) {
             sb = fc.placeBox(od);
             if (sb != null) break;
         }
-        // Wenn es nicht möglich ist, den Quader unterzubringen,
-        // null zurück geben.
+        // Wenn es nicht mÃ¶glich ist, den Quader unterzubringen,
+        // null zurÃ¼ck geben.
         if (sb == null) return null;
         // Bei Erfolg einen entsprechenden situierten Quader
-        // (inkl. Eckpunkten u. Flächen)
+        // (inkl. Eckpunkten u. FlÃ¤chen)
         // in der Liste der besetzten Quader speichern,
         // die Liste der freien Quader neu generierten
-        // und die SituBox (nur Ausmaße u. Position) zurück geben.
+        // und die SituBox (nur AusmaÃŸe u. Position) zurÃ¼ck geben.
         else {
-            float[] dms = sb.getDims();
-            lc.add(Cuboid.createWith(new Point(sb.ori),
+            float[] dms = sb.getOrigDimsCopy();
+            lc.add(Cuboid.createWith(new Point(sb.origin),
                     new Point(new float[] {
-                                dms[0] + sb.ori[0],
-                                dms[1] + sb.ori[1],
-                                dms[2] + sb.ori[2]})));
+                                dms[0] + sb.origin[0],
+                                dms[1] + sb.origin[1],
+                                dms[2] + sb.origin[2]})));
             updateFreeCuboids();
             return sb;
         }
     }
 
-	// Für jeden neuen freien Quader prüfen, ob er einen
+	// FÃ¼r jeden neuen freien Quader prÃ¼fen, ob er einen
 	// der besetzten Quader schneidet.
 //	private void checkNewFreeCuboidIntersection(List<Cuboid> afc) {
 //		for (Cuboid fc : afc) {

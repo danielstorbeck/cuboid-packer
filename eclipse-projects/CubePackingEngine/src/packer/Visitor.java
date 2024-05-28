@@ -5,7 +5,7 @@
 
 package packer;
 
-import store.SituBox;
+import store.SituatedBox;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
@@ -15,13 +15,13 @@ import java.util.ArrayList;
  * @author daniel
  */
 public class Visitor {
-    Map<SituBox, CombinerBox> mb;
-    List<SituBox> lsb = new ArrayList<SituBox>();
-    public Visitor(Map<SituBox, CombinerBox> m) {
+    Map<SituatedBox, CombinerBox> mb;
+    List<SituatedBox> lsb = new ArrayList<SituatedBox>();
+    public Visitor(Map<SituatedBox, CombinerBox> m) {
         mb = m;
     }
-    public List<SituBox> getSituatedBoxes() {
-        for (SituBox sb : mb.keySet()) {
+    public List<SituatedBox> getSituatedBoxes() {
+        for (SituatedBox sb : mb.keySet()) {
             CombinerBox cb = mb.get(sb);
             cb.acceptVisitor(this, sb.getOrigin());
         }
@@ -34,7 +34,7 @@ public class Visitor {
             cb.delegateVisitor(this, orig);
         }
         else {
-            SituBox sb = new SituBox(cb.getRelativeVector(), aOrig);
+            SituatedBox sb = new SituatedBox(cb.getRelativeVector(), aOrig);
             lsb.add(sb);
         }
     }

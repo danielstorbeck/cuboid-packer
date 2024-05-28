@@ -20,11 +20,11 @@ public class XYStraights {
         else if (s.a == Axis.Y) ys.add(s);
     }
     
-    // Erzeugen aller Fl‰chen, die sich durch Schneiden der
-    // enthaltenen Geraden und den R‰ndern der Grundfl‰che
-    // innerhalb dieser Grundfl‰che bilden lassen.
+    // Erzeugen aller Fl√§chen, die sich durch Schneiden der
+    // enthaltenen Geraden und den R√§ndern der Grundfl√§che
+    // innerhalb dieser Grundfl√§che bilden lassen.
     public List<Face> getAllFaces() {
-    	// Sammlung gebildeter Fl‰chen.
+    	// Sammlung gebildeter Fl√§chen.
         List<Face> lf = new ArrayList<Face>();
         // Die sortierten Geradenmengen als Listen zum Iterieren.
         List<Straight> lx = new ArrayList<Straight>(xs);
@@ -36,7 +36,7 @@ public class XYStraights {
         int px = nx - 1;
         int py = ny - 1;
         // Indices, die auf zwei x-Geraden zeigen, zwischen denen
-        // Fl‰chen gebildet werden.
+        // Fl√§chen gebildet werden.
         int ix = 0;
         int jx = 0;
         // Indices, die auf zwei y-Geraden zeigen, usw.
@@ -44,7 +44,7 @@ public class XYStraights {
         int jy = 0;
         // Zwischen allen Paaren verschiedener x-Geraden werden alle
         // Kombinationen zweier verschiedener y-Geraden erzeugt
-        // und die Fl‰chen, die dabei abgegrenzt werden, gesammelt.
+        // und die Fl√§chen, die dabei abgegrenzt werden, gesammelt.
         while (ix <= px) {
             jx = ix + 1;
             while (jx < nx) {
@@ -58,7 +58,7 @@ public class XYStraights {
                         Straight sy1 = ly.get(iy);
                         Straight sy2 = ly.get(jy);
                         // Finden zweier Schnittpunkte,
-                        // die die Fl‰che aufspannen.
+                        // die die Fl√§che aufspannen.
                         Point p1 = sx1.intersectionWith(sy1);
                         Point p2 = sx2.intersectionWith(sy2);
                         lf.add(new Face(p1, p2));

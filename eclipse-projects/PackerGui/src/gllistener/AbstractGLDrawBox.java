@@ -1,15 +1,15 @@
 package gllistener;
 
-import javax.media.opengl.GL;
+import store.SituatedBox;
 
-import store.SituBox;
+import com.jogamp.opengl.GL2;
 
 public abstract class AbstractGLDrawBox implements GLDrawableBox {
 	float[] d; // space diagonal
 	float[] o; // origin
 
-	public AbstractGLDrawBox(SituBox sb, float[] cd) {
-		d = sb.getDims();
+	public AbstractGLDrawBox(SituatedBox sb, float[] cd) {
+		d = sb.getOrigDimsCopy();
 		float[] orig = sb.getOrigin();
 		// Translate the origin of the container
 		// to the center of the container.
@@ -18,5 +18,5 @@ public abstract class AbstractGLDrawBox implements GLDrawableBox {
 				orig[2] - (cd[2] * 0.5f) };
 	}
 
-	public abstract void draw(GL gl);
+	public abstract void draw(GL2 gl);
 }

@@ -1,13 +1,14 @@
 package gllistener;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLAutoDrawable;
 
 public class SpinningCube extends AbstractGLObject {
 	float ang = 0;
 
 	public void display(GLAutoDrawable gLDrawable) {
-		final GL gl = gLDrawable.getGL();
+		final GL2 gl = gLDrawable.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
@@ -18,7 +19,7 @@ public class SpinningCube extends AbstractGLObject {
 		gl.glRotatef(ang, 0.0f, 1.0f, 0.0f);
 		gl.glRotatef(ang, 0.0f, 0.0f, 1.0f);
 		// cube definition
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 		// faces
 		// front
 		gl.glColor3f(0.0f, 1.0f, 1.0f);
@@ -62,4 +63,7 @@ public class SpinningCube extends AbstractGLObject {
 		ang += 0.2;
 		ang = ang % 360.0f;
 	}
+
+    @Override
+    public void dispose(GLAutoDrawable drawable) {}
 }

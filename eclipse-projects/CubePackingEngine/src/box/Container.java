@@ -9,7 +9,7 @@ public class Container extends PackBox {
     boolean hasContent = false;
     // Die enthaltenen Quader.
     protected Container c1, c2;
-    // Vektoren, die auf die Ursprünge der eingebetteten Quader
+    // Vektoren, die auf die UrsprÃ¼nge der eingebetteten Quader
     // zeigen, vom Ursprung dieses Quaders aus gesehen.
     protected float[] v1, v2;
     
@@ -25,23 +25,23 @@ public class Container extends PackBox {
         hasContent = true;
         
         // Integration der enthaltenen Quader und Optimieren ihrer
-        // Rotation, so dass ihre größten Flächen aneinander liegen.
-        // So wird das Volumen ihres Außenquaders minimiert.
+        // Rotation, so dass ihre grÃ¶ÃŸten FlÃ¤chen aneinander liegen.
+        // So wird das Volumen ihres AuÃŸenquaders minimiert.
         c1 = a; c1.parent = this; c1.optimizeOrientation();
         c2 = b; c2.parent = this; c2.optimizeOrientation();
         
-        // Dieser Quader ist der Außenquader der enthaltenen.
+        // Dieser Quader ist der AuÃŸenquader der enthaltenen.
         // Anpassen seiner Dimensionen u. seines Vektors.
         float[] d1 = c1.getDiagonal();
         float[] d2 = c2.getDiagonal();
-        dims[0] = Math.max(d1[0], d2[0]);
-        dims[1] = Math.max(d1[1], d2[1]);
-        dims[2] = d1[2] + d2[2];
-        System.arraycopy(dims, 0, oDims, 0, 3);
-        orderDims();
-        System.arraycopy(dims, 0, diag, 0, 3);
+        origDims[0] = Math.max(d1[0], d2[0]);
+        origDims[1] = Math.max(d1[1], d2[1]);
+        origDims[2] = d1[2] + d2[2];
+        System.arraycopy(origDims, 0, sortedDims, 0, 3);
+        sortDimensions();
+        System.arraycopy(origDims, 0, diag, 0, 3);
         
-        // Ursprünge der enthaltenen Quader.
+        // UrsprÃ¼nge der enthaltenen Quader.
         v1 = new float[] {0.0f, 0.0f, 0.0f};
         v2 = new float[] {0.0f, 0.0f, d1[2]};
     }

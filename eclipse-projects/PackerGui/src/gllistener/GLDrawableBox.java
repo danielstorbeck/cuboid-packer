@@ -1,7 +1,7 @@
 package gllistener;
 
-import javax.media.opengl.GL;
+import com.jogamp.opengl.GL2;
 
 public interface GLDrawableBox {
-	public void draw(GL gl);
+	public void draw(GL2 gl);
 }

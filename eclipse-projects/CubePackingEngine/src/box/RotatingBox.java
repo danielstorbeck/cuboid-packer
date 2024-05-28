@@ -6,36 +6,36 @@ package box;
  * Rotation in alle Richtungen in 90 Grad-Schritten.
  * (Durch Fummeln drauf gekommen.) 
  */
-public class RotBox extends OrdDims {
-	
-	// Vektor, relativ zu Ursprung
-	// eines imagin‰ren Koordinatensystems.
+public class RotatingBox extends OrderedDimensions {
+
+    // Vektor, relativ zu Ursprung
+    // eines imagin√§ren Koordinatensystems.
     float[] diag = new float[3];
     
     // Derzeitige Rotation als Einheitsvektor dargestellt.
     int[] rot = {1, 1, 1};
     
-    // Rotationsmasken f¸r die ƒnderung der
+    // Rotationsmasken f√ºr die √Ñnderung der
     // Orientierung der Vektorkomponenten.
     // Z.B. wandert der Ursprung des Vektors bei einer
-    // Rotation um die x-Achse auf den Ecken der y-z-Fl‰che,
+    // Rotation um die x-Achse auf den Ecken der y-z-Fl√§che,
     // auf der er derzeit liegt.
     // Weiter dokumentiert am Fall der x-Rotation, siehe unten.
     int[] xRotMask = {1, -1};
     int[] yRotMask = {1, -1};
     int[] zRotMask = {1, -1};
     
-    // Konstruktion aus Ausmaﬂen.
-    public RotBox(float[] d) {
+    // Konstruktion aus Ausma√üen.
+    public RotatingBox(float[] d) {
         super(d);
-        // Originale Ausmaﬂe sind auch originaler Vektor.
+        // Originale Ausma√üe sind auch originaler Vektor.
         System.arraycopy(d, 0, diag, 0, 3);
     }
     
-    // Konstruktion aus Ausmaﬂ-Objekt.
-    public RotBox(OrdDims od) {
-        super(od.dims);
-        System.arraycopy(od.dims, 0, diag, 0, 3);
+    // Konstruktion aus Ausma√ü-Objekt.
+    public RotatingBox(OrderedDimensions od) {
+        super(od.origDims);
+        System.arraycopy(od.origDims, 0, diag, 0, 3);
     }
     
     // Rotation um x-Achse.
@@ -47,7 +47,7 @@ public class RotBox extends OrdDims {
         // des Einheitsvektors.
         rot[1] = rot[1] * xRotMask[0];
         rot[2] = rot[2] * xRotMask[1];
-        // Vertauschen der L‰ngen der y- und z-Komponenten.
+        // Vertauschen der L√§ngen der y- und z-Komponenten.
         invertYZ();
     }
     
@@ -69,17 +69,17 @@ public class RotBox extends OrdDims {
         invertXY();
     }
     
-    // Vertauschen der L‰ngen der y- und z-Komponenten.
+    // Vertauschen der L√§ngen der y- und z-Komponenten.
     public void invertYZ() {
         float t = diag[1]; diag[1] = diag[2]; diag[2] = t;
     }
     
-    // Vertauschen der L‰ngen der x- und z-Komponenten.
+    // Vertauschen der L√§ngen der x- und z-Komponenten.
     public void invertXZ() {
         float t = diag[0]; diag[0] = diag[2]; diag[2] = t;
     }
     
-    // Vertauschen der L‰ngen der y- und x-Komponenten.
+    // Vertauschen der L√§ngen der y- und x-Komponenten.
     public void invertXY() {
         float t = diag[0]; diag[0] = diag[1]; diag[1] = t;
     }

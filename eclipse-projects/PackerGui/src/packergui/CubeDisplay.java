@@ -6,21 +6,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
-import javax.swing.event.MouseInputAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.Point;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.media.opengl.GLJPanel;
-import com.sun.opengl.util.Animator;
 
 import misc.Observer;
 import misc.Event;
-import misc.ForDragLineAskable;
-import box.OrdDims;
-import gllistener.RotatableBoxes;
-import gllistener.SpinningCube;
-import store.SituBox;
+import box.OrderedDimensions;
+import store.SituatedBox;
 import packer.Packer;
 
 public class CubeDisplay extends JPanel implements Observer, ActionListener {
@@ -56,17 +49,17 @@ public class CubeDisplay extends JPanel implements Observer, ActionListener {
         }
     }
     public void actionPerformed(ActionEvent e) {
-        OrdDims cnt = ctm.getContainerDims();
+        OrderedDimensions cnt = ctm.getContainerDims();
         // Check container.
         if (!cnt.isNonZero()) {
             b.setEnabled(false);
             HelpTicker.putStillMessage("Container has no volume!");
             return;
         }
-        List<OrdDims> lb = btm.getBoxDims();
+        List<OrderedDimensions> lb = btm.getBoxDims();
         // Check boxes.
-        ArrayList<OrdDims> ab = new ArrayList<OrdDims>();
-        for (OrdDims od : lb) {
+        ArrayList<OrderedDimensions> ab = new ArrayList<OrderedDimensions>();
+        for (OrderedDimensions od : lb) {
             if (od.isNonZero() && od.fitsIn(cnt))
                 ab.add(od);
         }
@@ -76,14 +69,14 @@ public class CubeDisplay extends JPanel implements Observer, ActionListener {
             return;
         }
         // Container ok, boxes ok.
-        final OrdDims c = cnt;
-        final ArrayList<OrdDims> a = ab;
+        final OrderedDimensions c = cnt;
+        final ArrayList<OrderedDimensions> a = ab;
         Runnable r = new Runnable() {
             public void run() {
                 // Situate boxes in another thread.
                 Packer pck = new Packer(c, a);
-                final List<SituBox> lsb = pck.getSituatedBoxes();
-                final List<OrdDims> lib = pck.getIgnoredBoxes();
+                final List<SituatedBox> lsb = pck.getSituatedBoxes();
+                final List<OrderedDimensions> lib = pck.getIgnoredBoxes();
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         // Display stuff back in event thread.
@@ -101,73 +94,5 @@ public class CubeDisplay extends JPanel implements Observer, ActionListener {
         HelpTicker.displayWaitMessage();
         // Disable button.
         b.setEnabled(false);
-    }
-}
-
-class GLPanel extends GLJPanel implements ForDragLineAskable {
-	private static final long serialVersionUID = 1L;
-	DragListener dl = new DragListener();
-    RotatableBoxes rb;
-    SpinningCube sc = new SpinningCube();
-    boolean waitingCubeActive = false;
-    boolean dragListenerActive = false;
-    Animator an = new Animator(this);
-    Point sPoint = null;
-    Point ePoint = null;
-    class DragListener extends MouseInputAdapter {
-        @Override
-        public void mousePressed(MouseEvent e) {
-            sPoint = e.getPoint();
-        }
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            ePoint = e.getPoint();
-            display();
-        }
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            sPoint = null;
-            ePoint = null;
-            display();
-        }
-    }
-    public GLPanel() {
-        super();
-        plugWaitingCube();
-    }
-    public Point[] getDragLine() {
-        return new Point[] {sPoint, ePoint};
-    }
-    void plugWaitingCube() {
-        addGLEventListener(sc);
-        an.start();
-        waitingCubeActive = true;
-    }
-    void unplugWaitingCube() {
-        an.stop();
-        removeGLEventListener(sc);
-        waitingCubeActive = false;
-    }
-    void plugBoxes() {
-        addMouseListener(dl);
-        addMouseMotionListener(dl);
-        dragListenerActive = true;
-    }
-    void unplugBoxes() {
-        removeGLEventListener(rb);
-        removeMouseListener(dl);
-        removeMouseMotionListener(dl);
-        dragListenerActive = false;
-    }
-    public void displayWaitingSign() {
-        if (dragListenerActive == true) unplugBoxes();
-        if (waitingCubeActive == false) plugWaitingCube();
-    }
-    public void displayBoxes(OrdDims cnt, List<SituBox> lsb, List<OrdDims> lib) {
-        rb = new RotatableBoxes(cnt, lsb);
-        rb.setDragLineProvider(this);
-        if (waitingCubeActive == true) unplugWaitingCube();
-        addGLEventListener(rb);
-        plugBoxes();
     }
 }

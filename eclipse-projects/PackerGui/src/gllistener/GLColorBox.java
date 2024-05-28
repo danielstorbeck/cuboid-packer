@@ -1,8 +1,8 @@
 package gllistener;
 
-import javax.media.opengl.GL;
+import com.jogamp.opengl.GL2;
 
-import store.SituBox;
+import store.SituatedBox;
 
 public class GLColorBox extends AbstractGLDrawBox {
 	static float[][] colors = new float[][] { { 1.0f, 0.0f, 0.0f },
@@ -10,7 +10,7 @@ public class GLColorBox extends AbstractGLDrawBox {
 			{ 1.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 1.0f } };
 	float[] c; // color
 
-	public GLColorBox(SituBox sb, float[] cd) {
+	public GLColorBox(SituatedBox sb, float[] cd) {
 		super(sb, cd);
 		// Pick color.
 		int i = (int) Math.floor(5.99 * Math.random());
@@ -18,7 +18,7 @@ public class GLColorBox extends AbstractGLDrawBox {
 	}
 
 	@Override
-	public void draw(GL gl) {
+	public void draw(GL2 gl) {
 		// color
 		gl.glColor3f(c[0], c[1], c[2]);
 		// Draw faces.

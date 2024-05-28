@@ -24,7 +24,7 @@ public class Point {
                     Math.min(p1.co[2], p2.co[2])});
     }
 
-    // Neuer Punkt aus den jeweils größten Koordinaten
+    // Neuer Punkt aus den jeweils grÃ¶ÃŸten Koordinaten
     // der beiden Ausgangspunkte.
     public static Point createMaximumFrom(Point p1, Point p2) {
         return new Point(new float[]{

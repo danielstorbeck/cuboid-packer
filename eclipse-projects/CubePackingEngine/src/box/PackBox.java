@@ -1,7 +1,7 @@
 package box;
 
 import box.Module.Axis;
-import store.SituBox;
+import store.SituatedBox;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * Hat Rotationshistorie.
  * Rotiert in eine optimale Ausgangslage.
  */
-public class PackBox extends RotBox {
+public class PackBox extends RotatingBox {
 	
 	// Enthaltender Quader.
     PackBox parent = null;
@@ -21,8 +21,8 @@ public class PackBox extends RotBox {
         super(d);
     }
 
-    // Rotationsmethoden ¸berschrieben, so dass sie die Folge
-    // der ausgef¸hrten Rotationen archivieren.
+    // Rotationsmethoden √ºberschrieben, so dass sie die Folge
+    // der ausgef√ºhrten Rotationen archivieren.
     @Override
     void rotX() {
         super.rotX(); rHist.add(Axis.X);
@@ -37,10 +37,10 @@ public class PackBox extends RotBox {
     }
     
     // Rotation in die optimierte Ausgangsposition.
-    // Die grˆﬂte Fl‰che soll parallel zur x-y-Ebene sein.
-    // Die l‰ngste Kante soll parallel zur x-Achse sein.
-    // Wird von enthaltendem Quader benutzt, um die grˆﬂten
-    // Fl‰chen der enthaltenen Quader aneinander liegen zu lassen.
+    // Die gr√∂√üte Fl√§che soll parallel zur x-y-Ebene sein.
+    // Die l√§ngste Kante soll parallel zur x-Achse sein.
+    // Wird von enthaltendem Quader benutzt, um die gr√∂√üten
+    // Fl√§chen der enthaltenen Quader aneinander liegen zu lassen.
     public void optimizeOrientation() {
         float area1, area2, len1, len2;
         area1 = diag[0] * diag[1];
@@ -51,7 +51,7 @@ public class PackBox extends RotBox {
         // Versuch, durch x-Rotation zu optimieren.
         rotX(); area2 = diag[0] * diag[1];
         if (area2 < area1) rotX();
-        // Ist die l‰ngste Kante parallel zur x-Achse?
+        // Ist die l√§ngste Kante parallel zur x-Achse?
         len1 = diag[0];
         rotZ(); len2 = diag[0];
         if (len2 < len1) rotZ();
@@ -76,7 +76,7 @@ public class PackBox extends RotBox {
         for (List<Axis> rh : rhl)
             for (Axis a : rh)
             	// Rotationsmethoden der Oberklasse verwenden,
-            	// damit die Historie nicht ge‰ndert wird.
+            	// damit die Historie nicht ge√§ndert wird.
                 switch (a) {
                     case X:
                         super.rotX();
@@ -90,8 +90,8 @@ public class PackBox extends RotBox {
                 }
     }
     
-    public void rotateTo(SituBox sb) {
-        float[] sbd = sb.getDims();
+    public void rotateTo(SituatedBox sb) {
+        float[] sbd = sb.getOrigDimsCopy();
         if (diag[0] != sbd[0])
             rotY();
         if (diag[0] != sbd[0]) {

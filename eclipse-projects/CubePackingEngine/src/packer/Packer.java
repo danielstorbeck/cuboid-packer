@@ -1,7 +1,7 @@
 package packer;
 
-import box.OrdDims;
-import store.SituBox;
+import box.OrderedDimensions;
+import store.SituatedBox;
 import store.Capacity;
 import java.util.List;
 import java.util.ArrayList;
@@ -9,36 +9,42 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Packer {
-    Combiner cmb;
-    Capacity cap;
-    Map<SituBox, CombinerBox> msb = new HashMap<SituBox, CombinerBox>(); // map of situated boxes
-    List<OrdDims> lib = new ArrayList<OrdDims>(); // list of ignored boxes
-    // Take container dimensions.
-    // Take list of box dimensions.
-    public Packer(OrdDims cd, List<OrdDims> ld) {
-        cmb = new Combiner(ld);
-        cap = new Capacity(cd.getDims());
+    Combiner combiner;
+    Capacity capacity;
+    Map<SituatedBox, CombinerBox> situatedBoxes = new HashMap<SituatedBox, CombinerBox>();
+    List<OrderedDimensions> ignoredBoxes = new ArrayList<OrderedDimensions>();
+
+    /**
+     * Constructor
+     * 
+     * @param containerDimensions
+     * @param cuboids
+     */
+    public Packer(OrderedDimensions containerDimensions, List<OrderedDimensions> cuboids) {
+        combiner = new Combiner(cuboids);
+        capacity = new Capacity(containerDimensions.getOrigDimsCopy());
     }
+    
     void cancelPacking() {
-        cmb.unpackAll();
-        while (cmb.hasMoreElements()) {
-            lib.add(cmb.nextElement());
+        combiner.unpackAll();
+        while (combiner.hasMoreElements()) {
+            ignoredBoxes.add(combiner.nextElement());
         }
 
     }
-    public List<SituBox> getSituatedBoxes() {
+    public List<SituatedBox> getSituatedBoxes() {
         Visitor v;
         boolean fit;
-        OrdDims bfd;
+        OrderedDimensions bfd;
         CombinerBox cb;
-        while (cmb.hasMoreElements()) {
-            SortedFreeDims sfd = new SortedFreeDims(cap.getFreeDimensions(),
+        while (combiner.hasMoreElements()) {
+            SortedFreeDims sfd = new SortedFreeDims(capacity.getFreeDimensions(),
                     SortedFreeDims.Order.SUM_OF_EDGES);
             if (!sfd.hasMoreElements()) {
                 cancelPacking();
                 break;
             }
-            cb = cmb.nextElement();
+            cb = combiner.nextElement();
             fit = false;
             while (sfd.hasMoreElements()) {
                 bfd = sfd.nextElement();
@@ -48,19 +54,19 @@ public class Packer {
                 }
             }
             if (fit) {
-                SituBox sb = cap.add(cb);
+                SituatedBox sb = capacity.add(cb);
                 if (sb == null) throw new RuntimeException(
                         "Box fits in free dimensions but Capacity can't place it!");
                 cb.rotateTo(sb);
-                msb.put(sb, cb);
+                situatedBoxes.put(sb, cb);
             }
-            else if (cb.hasContent()) cmb.unpack(cb);
-            else lib.add(cb);
+            else if (cb.hasContent()) combiner.unpack(cb);
+            else ignoredBoxes.add(cb);
         }
-        v = new Visitor(msb);
+        v = new Visitor(situatedBoxes);
         return v.getSituatedBoxes();
     }
-    public List<OrdDims> getIgnoredBoxes() {
-        return lib;
+    public List<OrderedDimensions> getIgnoredBoxes() {
+        return ignoredBoxes;
     }
 }

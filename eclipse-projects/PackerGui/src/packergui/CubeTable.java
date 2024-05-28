@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
 import java.awt.Component;
 import java.awt.Color;
 
-import box.OrdDims;
+import box.OrderedDimensions;
 import misc.Observable;
 import misc.Observer;
 import misc.Event;
@@ -149,8 +149,8 @@ class ContTableModel extends AbstractTableModel implements Observable {
 		return contData;
 	}
 
-	public OrdDims getContainerDims() {
-		return new OrdDims(contData);
+	public OrderedDimensions getContainerDims() {
+		return new OrderedDimensions(contData);
 	}
 }
 
@@ -290,15 +290,15 @@ class BoxTableModel extends AbstractTableModel implements Observable {
 		return boxData;
 	}
 
-	public List<OrdDims> getBoxDims() {
-		List<OrdDims> ab = new ArrayList<OrdDims>();
-		OrdDims b;
+	public List<OrderedDimensions> getBoxDims() {
+		List<OrderedDimensions> ab = new ArrayList<OrderedDimensions>();
+		OrderedDimensions b;
 		int n = 0;
 		for (Vector<Number> vn : boxData) {
 			float[] ff = new float[] { (Float) vn.get(0), (Float) vn.get(1),
 					(Float) vn.get(2) };
 			for (int i = (Integer) vn.get(3); i > 0; i--) {
-				b = new OrdDims(ff);
+				b = new OrderedDimensions(ff);
 				b.setID(n);
 				ab.add(b);
 			}
@@ -352,13 +352,13 @@ class TableDataListener implements TableModelListener {
 	BoxTableCellRenderer btcr;
 
 	public void tableChanged(TableModelEvent e) {
-		OrdDims box;
-		OrdDims cont = new OrdDims(cmod.getMeasures());
+		OrderedDimensions box;
+		OrderedDimensions cont = new OrderedDimensions(cmod.getMeasures());
 		int i = 0;
 		List<Vector<Number>> avn = bmod.getDataRows();
 		ArrayList<Integer> atb = new ArrayList<Integer>();
 		for (Vector<Number> vn : avn) {
-			box = new OrdDims(new float[] { (Float) vn.get(0),
+			box = new OrderedDimensions(new float[] { (Float) vn.get(0),
 					(Float) vn.get(1), (Float) vn.get(2) });
 			if (!box.fitsIn(cont)) {
 				atb.add(new Integer(i));

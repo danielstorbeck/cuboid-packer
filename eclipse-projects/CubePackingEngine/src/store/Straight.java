@@ -4,7 +4,7 @@ import box.Module.Axis;
 
 /**
  * Gerade definiert durch einen Punkt und eine Achse,
- * nämlich die x- oder y-Achse, denn interessant sind
+ * nÃ¤mlich die x- oder y-Achse, denn interessant sind
  * nur Geraden, die in einer x-y-Ebene liegen.
  */
 public class Straight extends Point {

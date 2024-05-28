@@ -1,25 +1,26 @@
 package gllistener;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.awt.Point;
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
+import java.util.ArrayList;
+import java.util.List;
 
 import misc.ForDragLineAskable;
-import box.OrdDims;
-import store.SituBox;
+import store.SituatedBox;
+import box.OrderedDimensions;
+
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLAutoDrawable;
 
 public class RotatableBoxes extends AbstractGLObject {
 	ForDragLineAskable fdla;
-	OrdDims cnt;
+	OrderedDimensions cnt;
 
 	ArrayList<GLDrawableBox> ldb = new ArrayList<GLDrawableBox>();
 
-	public RotatableBoxes(OrdDims c, List<SituBox> l) {
+	public RotatableBoxes(OrderedDimensions c, List<SituatedBox> l) {
 		cnt = c;
-		for (SituBox sb : l)
-			ldb.add(new GLColorBox(sb, c.getDims()));
+		for (SituatedBox sb : l)
+			ldb.add(new GLColorBox(sb, c.getOrigDimsCopy()));
 	}
 
 	public void setDragLineProvider(ForDragLineAskable a) {
@@ -27,12 +28,12 @@ public class RotatableBoxes extends AbstractGLObject {
 	}
 
 	public void display(GLAutoDrawable gLDrawable) {
-		final GL gl = gLDrawable.getGL();
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+		final GL2 gl = gLDrawable.getGL().getGL2();
+		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glClear(GL2.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 		// Push container backwards depending on its size.
-		gl.glTranslatef(0.0f, 0.0f, -(cnt.getOrdDims()[2]) * 2);
+		gl.glTranslatef(0.0f, 0.0f, -(cnt.getSortedDimsCopy()[2]) * 2);
 		// Fetch rotation vector.
 		int xDiff = 0;
 		int yDiff = 0;
@@ -44,13 +45,16 @@ public class RotatableBoxes extends AbstractGLObject {
 		gl.glRotatef(yDiff, 1.0f, 0.0f, 0.0f);
 		gl.glRotatef(xDiff, 0.0f, 1.0f, 0.0f);
 		// Draw container.
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL2.GL_LINES);
 		(new GLContainerGrid(cnt)).draw(gl);
 		gl.glEnd();
 		// Draw boxes.
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 		for (GLDrawableBox db : ldb)
 			db.draw(gl);
 		gl.glEnd();
 	}
+
+    @Override
+    public void dispose(GLAutoDrawable drawable) {}
 }

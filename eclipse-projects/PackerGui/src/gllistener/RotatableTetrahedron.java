@@ -1,10 +1,11 @@
 package gllistener;
 
 import java.awt.Point;
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
 import misc.ForDragLineAskable;
+
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLAutoDrawable;
 
 public class RotatableTetrahedron extends AbstractGLObject {
 	ForDragLineAskable fdla;
@@ -14,9 +15,9 @@ public class RotatableTetrahedron extends AbstractGLObject {
 	}
 
 	public void display(GLAutoDrawable gLDrawable) {
-		final GL gl = gLDrawable.getGL();
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+		final GL2 gl = gLDrawable.getGL().getGL2();
+		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glClear(GL2.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.0f, 0.0f, -5.0f);
 		// Fetch rotation vector.
@@ -30,7 +31,7 @@ public class RotatableTetrahedron extends AbstractGLObject {
 		gl.glRotatef(yDiff, 1.0f, 0.0f, 0.0f);
 		gl.glRotatef(xDiff, 0.0f, 1.0f, 0.0f);
 		// Tetrahedron
-		gl.glBegin(GL.GL_TRIANGLES);
+		gl.glBegin(GL2.GL_TRIANGLES);
 		// Front
 		gl.glColor3f(0.0f, 1.0f, 1.0f);
 		gl.glVertex3f(0.0f, 1.0f, 0.0f);
@@ -62,4 +63,7 @@ public class RotatableTetrahedron extends AbstractGLObject {
 		// End
 		gl.glEnd();
 	}
+
+    @Override
+    public void dispose(GLAutoDrawable drawable) {}
 }
