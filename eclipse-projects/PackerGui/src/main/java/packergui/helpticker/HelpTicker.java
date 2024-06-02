@@ -1,4 +1,4 @@
-package packergui;
+package packergui.helpticker;
 
 import java.awt.Dimension;
 import javax.swing.BoxLayout;
@@ -69,54 +69,5 @@ public class HelpTicker extends JPanel {
     public static void putStillMessage(String s) {
         ht.stopTicker();
         HelpTicker.setInfoText(s);
-    }
-}
-
-class Messages {
-    static String BOX_LIST_MESSAGE = " To edit table cells double click on them, edit them, and then press return. "
-            + " To add more lines to the table, right click on the present lines," + " or on the table's title. "
-            + " To generate lines with random box definitions, go to the box generator tab. "
-            + " To select lines just point, click and drag. " + " To delete selected lines, press control backspace. "
-            + " A line turns red when the box does not fit into the container. ";
-    static String BOX_GENERATOR_MESSAGE = " Adjust the no. of boxes, min. and max. edge lengths,"
-            + " cubeness, and press the generate button. "
-            + " Cubeness is the tendency of all edges to have equal length. ";
-    static String BOX_DISPLAY_MESSAGE = " To generate the three-dimensional representation of the boxes"
-            + " press the display button. " + " When the result is displayed, point, click and drag on the image"
-            + " to rotate the container. ";
-    static String PLEASE_WAIT_MESSAGE = " The graphical representation is being calculated. " + " Please wait. ";
-}
-
-class Ticker implements Runnable {
-    String mess;
-    JLabel lab;
-    String str;
-
-    Ticker(String s, JLabel l) {
-        mess = s;
-        lab = l;
-        str = "  " + mess.substring(0);
-    }
-
-    @Override
-    public void run() {
-        lab.setText(str);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            return;
-        }
-        while (!Thread.interrupted()) {
-            while (str.length() < 500) {
-                str = str + " *** " + mess.substring(0);
-            }
-            str = str.substring(1);
-            lab.setText(str);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                break;
-            }
-        }
     }
 }

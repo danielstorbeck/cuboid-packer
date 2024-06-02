@@ -17,6 +17,7 @@ import store.SituatedBox;
 import packer.Packer;
 import packergui.cubetable.BoxTableModel;
 import packergui.cubetable.ContTableModel;
+import packergui.helpticker.HelpTicker;
 
 public class CubeDisplay extends JPanel implements Observer, ActionListener {
     private static final long serialVersionUID = 1L;

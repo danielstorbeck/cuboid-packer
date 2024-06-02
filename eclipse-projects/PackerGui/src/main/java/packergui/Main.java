@@ -2,6 +2,9 @@ package packergui;
 
 import java.awt.BorderLayout;
 import javax.swing.UIManager;
+
+import packergui.helpticker.HelpTicker;
+
 import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
 

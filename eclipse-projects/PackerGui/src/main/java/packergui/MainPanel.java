@@ -7,6 +7,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import packergui.cubetable.CubeTable;
+import packergui.helpticker.HelpTicker;
 
 public class MainPanel extends JPanel {
     private static final long serialVersionUID = 1L;
