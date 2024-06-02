@@ -1,3 +1,6 @@
-workspace
 eclipse-projects/CubePackingEngine/bin/
 eclipse-projects/PackerGui/bin/
+lib/*
+!lib/.gitkeep
+build
+dist
