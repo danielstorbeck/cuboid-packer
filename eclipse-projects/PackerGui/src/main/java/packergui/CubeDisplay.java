@@ -15,6 +15,8 @@ import misc.Event;
 import box.OrderedDimensions;
 import store.SituatedBox;
 import packer.Packer;
+import packergui.cubetable.BoxTableModel;
+import packergui.cubetable.ContTableModel;
 
 public class CubeDisplay extends JPanel implements Observer, ActionListener {
     private static final long serialVersionUID = 1L;
@@ -47,8 +49,8 @@ public class CubeDisplay extends JPanel implements Observer, ActionListener {
     }
 
     public void notifyAbout(Event e) {
-        if (e.getClass() == packergui.BoxTableModel.ContentChangedEvent.class
-                || e.getClass() == packergui.ContTableModel.ContentChangedEvent.class) {
+        if (e.getClass() == BoxTableModel.ContentChangedEvent.class
+                || e.getClass() == ContTableModel.ContentChangedEvent.class) {
             b.setEnabled(true);
         }
     }

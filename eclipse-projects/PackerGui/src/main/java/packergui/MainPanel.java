@@ -6,6 +6,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import packergui.cubetable.CubeTable;
+
 public class MainPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 

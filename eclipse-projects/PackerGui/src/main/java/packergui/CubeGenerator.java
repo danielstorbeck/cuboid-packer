@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeListener;
+
+import packergui.cubetable.BoxTableModel;
+
 import javax.swing.event.ChangeEvent;
 import java.util.Hashtable;
 import java.util.List;
