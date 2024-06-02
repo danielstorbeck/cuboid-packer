@@ -6,6 +6,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import packergui.cubedisplay.CubeDisplay;
 import packergui.cubegenerator.CubeGenerator;
 import packergui.cubetable.CubeTable;
 import packergui.helpticker.HelpTicker;

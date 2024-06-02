@@ -1,23 +1,23 @@
-package packergui;
+package packergui.cubedisplay;
 
-import java.util.List;
-import java.util.ArrayList;
-import javax.swing.SwingUtilities;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.BoxLayout;
-
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
-import misc.Observer;
-import misc.Event;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import box.OrderedDimensions;
-import store.SituatedBox;
+import misc.Event;
+import misc.Observer;
 import packer.Packer;
 import packergui.cubetable.BoxTableModel;
 import packergui.cubetable.ContTableModel;
 import packergui.helpticker.HelpTicker;
+import store.SituatedBox;
 
 public class CubeDisplay extends JPanel implements Observer, ActionListener {
     private static final long serialVersionUID = 1L;
