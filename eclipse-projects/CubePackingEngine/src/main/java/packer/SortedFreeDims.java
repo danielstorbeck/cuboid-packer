@@ -13,18 +13,18 @@ import java.util.Comparator;
  * Kann iteriert werden mit hasNext und next.
  */
 public class SortedFreeDims implements Enumeration<OrderedDimensions> {
-	
-	// Aufzählung der möglichen Sortierweisen.
-	// Elemente entsprechen weiter unten implementierten Klassen.
-	// (Derzeit nur eine.)
+
+    // Aufzählung der möglichen Sortierweisen.
+    // Elemente entsprechen weiter unten implementierten Klassen.
+    // (Derzeit nur eine.)
     public static enum Order {SUM_OF_EDGES};
-    
+
     // Liste der Quaderausmaße.
     List<OrderedDimensions> lod;
     // Anzahl Elemente und Zeiger auf aktuelles Element.
     int len;
     int idx;
-    
+
     // Konstruktion mit Liste von Quaderausmaßen und Sortierweise.
     // Unmittelbares Ausführen des Sortierens.
     public SortedFreeDims(List<OrderedDimensions> ld, Order so) {
@@ -34,27 +34,27 @@ public class SortedFreeDims implements Enumeration<OrderedDimensions> {
         // Einstellen der Sortierweise.
         Comparator<OrderedDimensions> cmp;
         if (so == Order.SUM_OF_EDGES) {
-        	cmp = new SumOfEdgesOrder();
+            cmp = new SumOfEdgesOrder();
         }
         else {
-        	cmp = new SumOfEdgesOrder();
+            cmp = new SumOfEdgesOrder();
         }
         // Sortieren.
         Collections.sort(lod, cmp);
     }
-    
+
     public void resetIndex() {
         idx = -1;
     }
-    
+
     public boolean hasMoreElements() {
         if (idx < len - 1) return true;
         else return false;
     }
-    
+
     public OrderedDimensions nextElement() {
         if (idx >= len - 1) {
-        	throw new NoSuchElementException();
+            throw new NoSuchElementException();
         }
         else {
             idx++;

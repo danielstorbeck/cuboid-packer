@@ -8,7 +8,7 @@ import box.Module.Axis;
  * nur Geraden, die in einer x-y-Ebene liegen.
  */
 public class Straight extends Point {
-	
+
     Axis a;
     
     // Konstruktion mit Punkt und Achse.
@@ -16,7 +16,7 @@ public class Straight extends Point {
         super(co2);
         a = a2;
     }
-    
+
     // Vergleich mit einer Geraden auf derselben Ebene.
     public boolean isEqualTo(Straight s) {
         if (a != s.a) return false;
@@ -24,7 +24,7 @@ public class Straight extends Point {
         if (a == Axis.Y && co[0] == s.co[0]) return true;
         return false;
     }
-    
+
     // Punkt, in dem sich diese mit einer anderen
     // Geraden schneidet.
     public Point intersectionWith(Straight s) {

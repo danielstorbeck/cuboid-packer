@@ -15,17 +15,17 @@ import java.util.Collections;
  * If combined cuboids are too big, they can be undone.
  */
 public class Combiner implements Enumeration<CombinerBox> {
-	
+
     List<CombinerBox> combinableCuboids = new ArrayList<CombinerBox>();
     BiggestSurfaceAreaOrder sortingCriterion = new BiggestSurfaceAreaOrder();
-    
+
     /**
      * constructor
      * 
      * @param cuboidDimensions
      */
     public Combiner(List<OrderedDimensions> cuboidDimensions) {
-    	// create combinable cuboids from cuboid dimensions
+        // create combinable cuboids from cuboid dimensions
         for (OrderedDimensions cuboidDims : cuboidDimensions) {
         	combinableCuboids.add(new CombinerBox(cuboidDims));
         }
@@ -33,11 +33,11 @@ public class Combiner implements Enumeration<CombinerBox> {
         // first combination run
         combine();
     }
-    
+
     public boolean hasMoreElements() {
         return combinableCuboids.size() > 0 ? true : false;
     }
-    
+
     public CombinerBox nextElement() {
         if (combinableCuboids.size() < 1) {
         	throw new NoSuchElementException();
@@ -50,29 +50,28 @@ public class Combiner implements Enumeration<CombinerBox> {
      * that point to a pair of cuboids
      * that are candidates for combination.
      */
-	class PairOfIndices {
-		int first;
-		int second;
+    class PairOfIndices {
+        int first;
+        int second;
 
-		PairOfIndices(int f, int s) {
-			first = f;
-			second = s;
-		}
+        PairOfIndices(int f, int s) {
+            first = f;
+            second = s;
+        }
 
-		public int getFirst() {
-			return first;
-		}
+        public int getFirst() {
+            return first;
+        }
 
-		public int getSecond() {
-			return second;
-		}
-	}
+        public int getSecond() {
+            return second;
+        }
+    }
 
-	/**
-	 * Combines cuboids into bigger ones provided that
-	 * there is more than one cuboid in the list
-	 * and that candidates for combination can be found.
-	 */
+    /**
+     * Combines cuboids into bigger ones provided that there is more than one cuboid
+     * in the list and that candidates for combination can be found.
+     */
     void combine() {
         boolean goOn = true;
         PairOfIndices indexPair;
@@ -86,14 +85,14 @@ public class Combiner implements Enumeration<CombinerBox> {
             else combinePair(indexPair);
         }
     }
-    
+
     /**
      * Combines a candidate pair of cuboids.
      * 
      * @param indexPair candidate pair of cuboids for combination
      */
     void combinePair(PairOfIndices indexPair) {
-    	// use indices to get candidates from list
+        // use indices to get candidates from list
         CombinerBox b1 = combinableCuboids.get(indexPair.getFirst());
         CombinerBox b2 = combinableCuboids.get(indexPair.getSecond());
         // remove them from list
@@ -106,7 +105,7 @@ public class Combiner implements Enumeration<CombinerBox> {
         // sort list
         Collections.sort(combinableCuboids, sortingCriterion);
     }
-    
+
     /**
      * Finds a candidate pair of cuboids for combination.
      * 
@@ -168,7 +167,7 @@ public class Combiner implements Enumeration<CombinerBox> {
         else if (maximumSpaceUsage > maximumCongruence) return spaceUsagePair;
         else return congruencePair;
     }
-    
+
     /**
      * Unpack a combined pair of cuboids.
      */
@@ -180,7 +179,7 @@ public class Combiner implements Enumeration<CombinerBox> {
         combinableCuboids.add(cuboid2);
         Collections.sort(combinableCuboids, sortingCriterion);
     }
-    
+
     /**
      * Unpack all combined cuboids.
      */

@@ -17,11 +17,12 @@ import store.SituatedBox;
 import packer.Packer;
 
 public class CubeDisplay extends JPanel implements Observer, ActionListener {
-	private static final long serialVersionUID = 1L;
-	BoxTableModel btm;
+    private static final long serialVersionUID = 1L;
+    BoxTableModel btm;
     ContTableModel ctm;
     JButton b;
     GLPanel glp;
+
     public CubeDisplay() {
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -34,20 +35,24 @@ public class CubeDisplay extends JPanel implements Observer, ActionListener {
         b.addActionListener(this);
         add(b);
     }
+
     public void setBTM(BoxTableModel m) {
         btm = m;
         btm.addObserver(this);
     }
+
     public void setCTM(ContTableModel m) {
         ctm = m;
         ctm.addObserver(this);
     }
+
     public void notifyAbout(Event e) {
         if (e.getClass() == packergui.BoxTableModel.ContentChangedEvent.class
-             || e.getClass() == packergui.ContTableModel.ContentChangedEvent.class) {
+                || e.getClass() == packergui.ContTableModel.ContentChangedEvent.class) {
             b.setEnabled(true);
         }
     }
+
     public void actionPerformed(ActionEvent e) {
         OrderedDimensions cnt = ctm.getContainerDims();
         // Check container.

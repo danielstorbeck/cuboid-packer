@@ -37,7 +37,7 @@ public class OrderedDimensions {
      * Sorts the copy of the dimensions.
      */
     protected void sortDimensions() {
-    	Arrays.sort(sortedDims);
+        Arrays.sort(sortedDims);
     }
 
     /**

@@ -24,7 +24,7 @@ public class Packer {
         combiner = new Combiner(cuboids);
         capacity = new Capacity(containerDimensions.getOrigDimsCopy());
     }
-    
+
     void cancelPacking() {
         combiner.unpackAll();
         while (combiner.hasMoreElements()) {

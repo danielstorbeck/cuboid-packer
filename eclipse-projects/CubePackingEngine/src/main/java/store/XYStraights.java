@@ -8,23 +8,23 @@ import java.util.Comparator;
 import box.Module.Axis;
 
 public class XYStraights {
-	
-	// Sortierte Mengen (unterschiedlicher) Geraden parallel zur x- bzw. y-Achse.
-	// Sortierkriterien sind in den beiden Comparator-Klassen
-	// weiter unten definiert.
+
+    // Sortierte Mengen (unterschiedlicher) Geraden parallel zur x- bzw. y-Achse.
+    // Sortierkriterien sind in den beiden Comparator-Klassen
+    // weiter unten definiert.
     SortedSet<Straight> xs = new TreeSet<Straight>(new XStraightComparator());
     SortedSet<Straight> ys = new TreeSet<Straight>(new YStraightComparator());
-    
+
     public void add(Straight s) {
         if (s.a == Axis.X) xs.add(s);
         else if (s.a == Axis.Y) ys.add(s);
     }
-    
+
     // Erzeugen aller Flächen, die sich durch Schneiden der
     // enthaltenen Geraden und den Rändern der Grundfläche
     // innerhalb dieser Grundfläche bilden lassen.
     public List<Face> getAllFaces() {
-    	// Sammlung gebildeter Flächen.
+        // Sammlung gebildeter Flächen.
         List<Face> lf = new ArrayList<Face>();
         // Die sortierten Geradenmengen als Listen zum Iterieren.
         List<Straight> lx = new ArrayList<Straight>(xs);

@@ -14,15 +14,15 @@ import java.util.List;
  * ausgehend vom Kontainer.
  */
 public class Cuboid extends OrderedDimensions {
-	
-	// Punkte, die am nächsten bzw. am weitesten vom Ursprung
-	// weg liegen bzw. irgendwo dazwischen. Fünf reichen, um alle
-	// Flächen zu konstruieren.
+
+    // Punkte, die am nächsten bzw. am weitesten vom Ursprung
+    // weg liegen bzw. irgendwo dazwischen. Fünf reichen, um alle
+    // Flächen zu konstruieren.
     Point min, b, c, d, max;
-    
+
     // Die Flächen.
     Face f1, f2, f3, f4, f5, f6;
-    
+
     // Factory-Methoden, die die Benutzung des Konstruktors vereinfacht.
     // Denn die Dimensionen werden aus den Punkten abgeleitet.
     static Cuboid createWith(Point p1, Point p2) {
@@ -38,7 +38,7 @@ public class Cuboid extends OrderedDimensions {
 
     // Konstruktion mit Dimensionen und zwei Punkten.
     Cuboid(float[] dm, Point min, Point max) {
-    	// Dimensionen
+        // Dimensionen
         super(dm);
         // Zwei Punkte, die den Quader aufspannen.
         this.min = min;
@@ -55,23 +55,23 @@ public class Cuboid extends OrderedDimensions {
         f5 = new Face(b, d); // oben
         f6 = new Face(c, d);
     }
-    
+
     public OrderedDimensions getOrdDimsBox() {
         return new OrderedDimensions(origDims);
     }
-    
+
     // Gibt die z-Koordinaten, an denen die beiden x-y-Flächen liegen,
     // in eine übergebene Sammlung.
     public void addZValuesTo(Set<Float> sf) {
         sf.add(new Float(min.co[2]));
         sf.add(new Float(max.co[2]));
     }
-    
+
     // f2 ist unten.
     public Face getBottomFace() {
         return new Face(f2.min, f2.max);
     }
-    
+
     // Falls die obere oder untere Fläche den übergebenen z-Wert hat,
     // in eine übergebene Sammlung geben.
     public void addZFaceOnLevelTo(float z, List<Face> lf) {
@@ -85,7 +85,7 @@ public class Cuboid extends OrderedDimensions {
                 && (p.co[1] >= min.co[1] && p.co[1] <= max.co[1])
                 && (p.co[2] >= min.co[2] && p.co[2] <= max.co[2]);
     }
-    
+
     // Liegt der Punkt auf einer der Flächen?
     public boolean hasPointOnFace(Point p) {
         if (p.co[0] == min.co[0] || p.co[0] == max.co[0]) return true;
@@ -93,7 +93,7 @@ public class Cuboid extends OrderedDimensions {
         else if (p.co[2] == min.co[2] || p.co[2] == max.co[2]) return true;
         else return false;
     }
-    
+
     // Liegt der Punkt auf einer der Kanten?
     public boolean hasPointOnEdge(Point p) {
         // f2-5 enthalten alle Kanten.
@@ -102,14 +102,14 @@ public class Cuboid extends OrderedDimensions {
                 || f4.hasPointOnEdge(p)
                 || f5.hasPointOnEdge(p);
     }
-    
+
     // Ist der Punkt einer der Eckpunkte?
     public boolean hasPointOnVertex(Point p) {
         // f1 and f6 are coplanar and contain all vertices.
         return f1.hasPointOnVertex(p)
                 || f6.hasPointOnVertex(p);
     }
-    
+
     // Schneiden sich Quader und übergebene Fläche?
     // Ausgenommen ist die obere Fläche.
     public boolean blocks(Face f) {
@@ -120,7 +120,7 @@ public class Cuboid extends OrderedDimensions {
             return false;
         }
     }
-    
+
     // Passt der übergebene rotierbare Quader in diesen Freiraum?
     // Vergleich der Längen der raumdiagonalen Vektoren, weil der
     // übergebene Quader positionslos ist.
@@ -128,7 +128,7 @@ public class Cuboid extends OrderedDimensions {
         float[] bd = rb.getDiagonal();
         return bd[0] <= origDims[0] && bd[1] <= origDims[1] && bd[2] <= origDims[2];
     }
-    
+
     // Passt der übergebene Quader in diesen Freiraum?
     // Der Quader wird gedreht und gewendet, und sobald
     // er passt, als situierter Quader zurück gegeben.
@@ -148,7 +148,7 @@ public class Cuboid extends OrderedDimensions {
         if (canPlaceBox(rb)) return new SituatedBox(rb.getDiagonal(), min.co);
         return null;
     }
-    
+
     // Ist der übergebene Freiraum in diesem enthalten?
     // Es geht um räumliches, positionsbezogenes Enthaltensein.
     public boolean contains(Cuboid c2) {
@@ -159,10 +159,10 @@ public class Cuboid extends OrderedDimensions {
                 && c2.max.co[1] <= max.co[1]
                 && c2.max.co[2] <= max.co[2];
     }
-    
+
     // Schneidet sich dieser Freiraum mit dem übergebenen.
     public boolean intersectsWith(Cuboid c2) {
-    	// Eigene Koordinaten.
+        // Eigene Koordinaten.
         float[] mm1 = new float[]{
             min.co[0], max.co[0],
             min.co[1], max.co[1],
@@ -179,8 +179,8 @@ public class Cuboid extends OrderedDimensions {
         float ig0, /*ig1, il0,*/ il1;
         // Iterieren über x-, y- und z-Koordinaten.
         for (int i = 2; i <= 6; i = i + 2) {
-        	// Fall, dass eigene maximale x-, y- bzw. z-Koordinate
-        	// größer/gleich der fremden ist.
+            // Fall, dass eigene maximale x-, y- bzw. z-Koordinate
+            // größer/gleich der fremden ist.
             if (mm1[i - 1] >= mm2[i - 1]) {
                 ig0 = mm1[i - 2];
                 //ig1 = mm1[i - 1];

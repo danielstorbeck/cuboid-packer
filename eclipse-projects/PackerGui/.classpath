@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/CubePackingEngine"/>
-	<classpathentry kind="lib" path="C:/Users/Daniel/software/jogl-2.5.0/jogamp-fat.jar" sourcepath="C:/Users/Daniel/software/jogl-2.5.0/jogamp-fat-java-src.zip"/>
+	<classpathentry kind="lib" path="/home/linux/software/jogl/jogamp-fat.jar" sourcepath="/home/linux/software/jogl/jogamp-fat-java-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

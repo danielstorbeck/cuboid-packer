@@ -16,19 +16,19 @@ import java.util.Iterator;
  * und den darin enthaltenen Quadern geben.
  */
 public class Capacity extends Cuboid {
-	
-	// Freie Quader.
-	// Liste wird nach jeder Platzierung neu generiert.
-	List<Cuboid> lfc;
-	// Besetzte, ehemals freie Quader.
+
+    // Freie Quader.
+    // Liste wird nach jeder Platzierung neu generiert.
+    List<Cuboid> lfc;
+    // Besetzte, ehemals freie Quader.
     List<Cuboid> lc = new ArrayList<Cuboid>();
-    
+
     public Capacity(float[] dm) {
         super(dm, new Point(new float[] {0.0f, 0.0f, 0.0f}),
                 new Point(dm));
         updateFreeCuboids();
     }
-    
+
     // Sammelt die z-Koordinaten aller x-y-Flächen ein, aus denen
     // der Kontainer besteht sowie die aller enthaltenen belegten
     // Quader.
@@ -40,7 +40,7 @@ public class Capacity extends Cuboid {
         }
         return zv;
     }
-    
+
     // Der Kontainer und alle belegten Quader geben diejenigen
     // ihrer x-y-Flächen in eine Liste, die auf der angegebenen
     // z-Ebene liegen.
@@ -52,7 +52,7 @@ public class Capacity extends Cuboid {
         }
         return lf;
     }
-    
+
     // Aufwendigste Funktion des Programms:
     // Die begrenzenden Geraden der x-y-Flächen der situierten
     // Quader werden eingesammelt. Daraus werden alle möglichen
@@ -93,7 +93,7 @@ public class Capacity extends Cuboid {
         }
         return lff;
     }
-    
+
     // Es wird eine Liste freier Quader zurück gegeben.
     // Die werden erzeugt, indem alle z-Ebenen im Kontainer
     // von unten nach oben durchiteriert werden, und von der
@@ -102,7 +102,7 @@ public class Capacity extends Cuboid {
     // hin so weit aufzuspannen, wie diese nicht von belegten
     //  Flächen einer höheren Ebene blockiert werden.
     void addFreeCuboidsAboveLevelTo(SortedSet<Float> zv, List<Cuboid> lc) {
-    	// Iteriert wird über die z-Ebenen.
+        // Iteriert wird über die z-Ebenen.
         Iterator<Float> zi = zv.iterator();
         // Jeder der Werte ist einmal der Basis-z-Wert.
         Float bz;
@@ -116,20 +116,20 @@ public class Capacity extends Cuboid {
         List<Face> lbf = getFreeFacesOnLevel(bz);
         // Iterieren über die nächsthöheren Ebenen.
         while (zi.hasNext()) {
-        	// Aktuelle nächsthöhere Ebene.
+            // Aktuelle nächsthöhere Ebene.
             Float cz = zi.next();
             // Blockierende Flächen auf der nächsthöheren Ebene.
             List<Face> czf = getFacesOnLevel(cz);
             // Für jede freie Fläche der Basis-z-Ebene,
             for (Face bf : lbf) {
-            	// versuchen, auf der aktuellen nächsthöheren Ebene
-            	// eine blockierende Fläche zu finden. Letztendlich
-            	// ist das die obere Fläche des Kontainers, sofern
-            	// keine anderen dazwischen kommen.
+                // versuchen, auf der aktuellen nächsthöheren Ebene
+                // eine blockierende Fläche zu finden. Letztendlich
+                // ist das die obere Fläche des Kontainers, sofern
+                // keine anderen dazwischen kommen.
                 for (Face cf : czf) {
-                	// Sobald eine gefunden wird, wird ein Quader von
-                	// der Basisfläche hoch bis zur blockierenden Fläche
-                	// aufgespannt und in die übergebene Liste gesteckt.
+                    // Sobald eine gefunden wird, wird ein Quader von
+                    // der Basisfläche hoch bis zur blockierenden Fläche
+                    // aufgespannt und in die übergebene Liste gesteckt.
                     if (cf.intersectsXYWith(bf)) {
                         lc.add(Cuboid.createWith(bf.min,
                                 new Point(new float[] {bf.max.co[0], bf.max.co[1], cz})));
@@ -139,7 +139,7 @@ public class Capacity extends Cuboid {
             }
         }
     }
-    
+
     // Alle freien Quader des Kontainers generieren.
     List<Cuboid> getAllFreeCuboids() {
         List<Cuboid> afc = new ArrayList<Cuboid>();
@@ -148,11 +148,11 @@ public class Capacity extends Cuboid {
         // des Kontainers,
         SortedSet<Float> azv = getAllZValues();
         for (Float z : azv) {
-        	// alle Quader generieren, die sich von den freien
-        	// Flächen der jeweiligen Ebene nach oben hin
-        	// aufspannen lassen, bis sie von darüber liegenden
-        	// Flächen oder letztendlich dem Kontainerdeckel
-        	// blockiert werden.
+            // alle Quader generieren, die sich von den freien
+            // Flächen der jeweiligen Ebene nach oben hin
+            // aufspannen lassen, bis sie von darüber liegenden
+            // Flächen oder letztendlich dem Kontainerdeckel
+            // blockiert werden.
             addFreeCuboidsAboveLevelTo(azv.tailSet(z), afc);
         }
         return afc;
@@ -169,16 +169,16 @@ public class Capacity extends Cuboid {
 
     // Liste freier Quader neu generieren.
     void updateFreeCuboids() {
-    	lfc = getAllFreeCuboids();
+        lfc = getAllFreeCuboids();
     }
-    
+
     // Wird vom Packer aufgerufen, um einen Quader zu platzieren.
     // Es gibt eine Liste mit freien Quadern, die durchprobiert werden.
     // Die freien Quader werden nach jeder Platzierung neu generiert,
     // erstmalig jedoch im Konstruktor.
     public SituatedBox add(OrderedDimensions od) {
-    	// Alle freien Quader durchgehen und versuchen,
-    	// den übergebenen Quader zu situieren.
+        // Alle freien Quader durchgehen und versuchen,
+        // den übergebenen Quader zu situieren.
         SituatedBox sb = null;
         for (Cuboid fc : lfc) {
             sb = fc.placeBox(od);
@@ -204,8 +204,8 @@ public class Capacity extends Cuboid {
         }
     }
 
-	// Für jeden neuen freien Quader prüfen, ob er einen
-	// der besetzten Quader schneidet.
+    // Für jeden neuen freien Quader prüfen, ob er einen
+    // der besetzten Quader schneidet.
 //	private void checkNewFreeCuboidIntersection(List<Cuboid> afc) {
 //		for (Cuboid fc : afc) {
 //			for (Cuboid oc : lc) {
@@ -218,5 +218,5 @@ public class Capacity extends Cuboid {
 //			}
 //		}
 //	}
-    
+
 }

@@ -25,16 +25,19 @@ public class GLPanel extends GLJPanel implements ForDragLineAskable {
     Animator an = new Animator(this);
     Point sPoint = null;
     Point ePoint = null;
+
     class DragListener extends MouseInputAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
             sPoint = e.getPoint();
         }
+
         @Override
         public void mouseDragged(MouseEvent e) {
             ePoint = e.getPoint();
             display();
         }
+
         @Override
         public void mouseReleased(MouseEvent e) {
             sPoint = null;
@@ -42,42 +45,53 @@ public class GLPanel extends GLJPanel implements ForDragLineAskable {
             display();
         }
     }
+
     public GLPanel() {
         super();
         plugWaitingCube();
     }
+
     public Point[] getDragLine() {
-        return new Point[] {sPoint, ePoint};
+        return new Point[] { sPoint, ePoint };
     }
+
     void plugWaitingCube() {
         addGLEventListener(sc);
         an.start();
         waitingCubeActive = true;
     }
+
     void unplugWaitingCube() {
         an.stop();
         removeGLEventListener(sc);
         waitingCubeActive = false;
     }
+
     void plugBoxes() {
         addMouseListener(dl);
         addMouseMotionListener(dl);
         dragListenerActive = true;
     }
+
     void unplugBoxes() {
         removeGLEventListener(rb);
         removeMouseListener(dl);
         removeMouseMotionListener(dl);
         dragListenerActive = false;
     }
+
     public void displayWaitingSign() {
-        if (dragListenerActive == true) unplugBoxes();
-        if (waitingCubeActive == false) plugWaitingCube();
+        if (dragListenerActive == true)
+            unplugBoxes();
+        if (waitingCubeActive == false)
+            plugWaitingCube();
     }
+
     public void displayBoxes(OrderedDimensions cnt, List<SituatedBox> lsb, List<OrderedDimensions> lib) {
         rb = new RotatableBoxes(cnt, lsb);
         rb.setDragLineProvider(this);
-        if (waitingCubeActive == true) unplugWaitingCube();
+        if (waitingCubeActive == true)
+            unplugWaitingCube();
         addGLEventListener(rb);
         plugBoxes();
     }

@@ -11,12 +11,12 @@ import java.util.List;
  * Rotiert in eine optimale Ausgangslage.
  */
 public class PackBox extends RotatingBox {
-	
-	// Enthaltender Quader.
+
+    // Enthaltender Quader.
     PackBox parent = null;
     // Rotationshistorie
     List<Axis> rHist = new ArrayList<Axis>();
-    
+
     public PackBox(float[] d) {
         super(d);
     }
@@ -35,7 +35,7 @@ public class PackBox extends RotatingBox {
     void rotZ() {
         super.rotZ(); rHist.add(Axis.Z);
     }
-    
+
     // Rotation in die optimierte Ausgangsposition.
     // Die größte Fläche soll parallel zur x-y-Ebene sein.
     // Die längste Kante soll parallel zur x-Achse sein.
@@ -56,7 +56,7 @@ public class PackBox extends RotatingBox {
         rotZ(); len2 = diag[0];
         if (len2 < len1) rotZ();
     }
-    
+
     // Komplette Rotationshistorie zusammenstellen.
     List<List<Axis>> getRotationHistory() {
         List<List<Axis>> rhl = new ArrayList<List<Axis>>();
@@ -68,15 +68,15 @@ public class PackBox extends RotatingBox {
         }
         return rhl;
     }
-    
+
     // Fehlende Rotationen der kompletten Historie nachholen.
     public void performAncestorRotations() {
         if (parent == null) return;
         List<List<Axis>> rhl = parent.getRotationHistory();
         for (List<Axis> rh : rhl)
             for (Axis a : rh)
-            	// Rotationsmethoden der Oberklasse verwenden,
-            	// damit die Historie nicht geändert wird.
+                // Rotationsmethoden der Oberklasse verwenden,
+                // damit die Historie nicht geändert wird.
                 switch (a) {
                     case X:
                         super.rotX();
@@ -89,7 +89,7 @@ public class PackBox extends RotatingBox {
                         break;
                 }
     }
-    
+
     public void rotateTo(SituatedBox sb) {
         float[] sbd = sb.getOrigDimsCopy();
         if (diag[0] != sbd[0])

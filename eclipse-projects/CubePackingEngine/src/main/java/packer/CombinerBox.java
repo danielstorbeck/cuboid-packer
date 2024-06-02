@@ -18,7 +18,7 @@ public class CombinerBox extends Container {
     public CombinerBox(OrderedDimensions cuboidDimensions) {
         super(cuboidDimensions.getOrigDimsCopy());
     }
-    
+
     /**
      * Constructor that combines two simple or combined cuboids.
      * 
@@ -38,7 +38,7 @@ public class CombinerBox extends Container {
         // dimensions are ordered ascendingly, so we take the last two
         return new float[] {sortedDims[1], sortedDims[2]};
     }
-    
+
     /**
      * Get the area of the greatest side.
      * 
@@ -48,7 +48,7 @@ public class CombinerBox extends Container {
         // dimensions are ordered ascendingly, so we take the last two
         return sortedDims[1] * sortedDims[2];
     }
-    
+
     /**
      * Two cuboids are joined by putting them side by side using
      * their greatest sides. Here the degree of congruence of these
@@ -65,7 +65,7 @@ public class CombinerBox extends Container {
             * Math.min(greatestDimensions1[1], greatestDimensions2[1]);
         return intersection / greaterArea;
     }
-    
+
     /**
      * Two cuboids are joined by putting them side by side using their
      * greatest sides. They are put inside a container that is just big
@@ -89,11 +89,11 @@ public class CombinerBox extends Container {
             containerDimensions[0] * containerDimensions[1] * containerDimensions[2];
         return (volume1 + volume2) / containerVolume;
     }
-    
+
     public void acceptVisitor(Visitor v, float[] orig) {
         v.processBox(this, orig);
     }
-    
+
     public void delegateVisitor(Visitor v, float[] orig) {
         ((CombinerBox)c1).acceptVisitor(v, new float[] {
                     orig[0] + v1[0], orig[1] + v1[1], orig[2] + v1[2]});

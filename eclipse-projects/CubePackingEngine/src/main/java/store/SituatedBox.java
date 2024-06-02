@@ -8,7 +8,7 @@ import box.OrderedDimensions;
  * and a set of dimensions.
  */
 public class SituatedBox extends OrderedDimensions {
-	
+
     float[] origin = new float[3];
 
     /**

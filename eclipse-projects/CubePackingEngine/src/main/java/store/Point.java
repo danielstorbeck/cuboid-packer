@@ -1,20 +1,20 @@
 package store;
 
 public class Point {
-	
-	//Koordinaten
+
+    // Koordinaten
     float[] co = new float[3];
-    
+
     // Konstruktion mit Koordinaten
     public Point(float[] co2) {
         System.arraycopy(co2, 0, co, 0, 3);
     }
-    
+
     // TODO equals und hash?
     public boolean isEqualTo(Point p) {
         return (co[0] == p.co[0] && co[1] == p.co[1] && co[2] == p.co[2]);
     }
-    
+
     // Neuer Punkt aus den jeweils kleinsten Koordinaten
     // der beiden Ausgangspunkte.
     public static Point createMinimumFrom(Point p1, Point p2) {
