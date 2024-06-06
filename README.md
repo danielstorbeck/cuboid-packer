@@ -1,6 +1,6 @@
 # Intro
 
-This is a cuboid packer. It's a toy project.
+This is a cuboid packer. It's an old toy project.
 I use the following setup:
 - Eclipse 4.8 (Photon) (optional)
 - jdk 8
@@ -11,7 +11,8 @@ I use the following setup:
 To run it you need the jogl fat jar.
 See the README in the jogl folder.
 
-#Roadmap
+##Roadmap
 
 - translate comments to english
 - write tests for the parts I don't understand any more
+- modernize code
