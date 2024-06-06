@@ -1,57 +1,92 @@
-<project name="Cuboid-Packer" default="dist" basedir=".">
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Cuboid-Packer" default="dist" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
   <description>
     A graphical 3D cuboid packer tool in Java.
   </description>
 
   <!-- global properties -->
-  <property name="src-engine" location="eclipse-projects/CubePackingEngine/src/main/java"/>
-  <property name="src-gui" location="eclipse-projects/PackerGui/src/main/java"/>
-  <property name="build" location="build"/>
-  <property name="dist" location="dist"/>
+  <property name="src.engine" location="eclipse-projects/CubePackingEngine/src/main/java"/>
+  <property name="src.gui" location="eclipse-projects/PackerGui/src/main/java"/>
+  <property name="src.asdf" location="eclipse-projects/SomeTests/src/main/java"/>
+  <property name="src.asdf.test" location="eclipse-projects/SomeTests/src/test/java"/>
+  <property name="dir.lib" location="lib"/>
+  <property name="dir.build" location="build"/>
+  <property name="dir.dist" location="dist"/>
 
-  <path id="project.class.path">
-    <pathelement location="lib/jogamp-fat.jar"/>
+  <path id="build.class.path">
+    <pathelement location="jogl/jogamp-fat.jar"/>
+    <fileset dir="${dir.lib}"/>
+  </path>
+
+  <path id="test.class.path">
+    <path refid="build.class.path"/>
+    <pathelement location="${dir.build}"/>
   </path>
 
   <path id="run.class.path">
-    <pathelement location="lib/jogamp-fat.jar"/>
-    <pathelement location="dist/lib/cuboid-packer.jar"/>
+    <path refid="build.class.path"/>
+    <pathelement location="${dir.dist}/lib/cuboid-packer.jar"/>
   </path>
 
-  <target name="init">
-    <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}"/>
+  <target name="clean" description="clean up">
+    <delete dir="${dir.lib}"/>
+    <delete dir="${dir.build}"/>
+    <delete dir="${dir.dist}"/>
   </target>
 
-  <target name="compile" depends="init"
-        description="compile the sources">
-    <!-- Compile the Java code from the source folders into ${build} -->
-    <javac srcdir="${src-engine}" destdir="${build}" includeAntRuntime="false">
-      <classpath refid="project.class.path"/>
+  <target name="init" depends="clean">
+    <mkdir dir="${dir.lib}"/>
+    <mkdir dir="${dir.build}"/>
+    <mkdir dir="${dir.build}/test-report"/>
+    <mkdir dir="${dir.dist}"/>
+  </target>
+
+  <target name="resolve" depends="init" description="retrieve dependencies with ivy">
+    <ivy:retrieve/>
+  </target>
+
+  <target name="report" depends="resolve" description="generate a report of dependencies">
+    <ivy:report todir="${dir.build}"/>
+  </target>
+
+  <target name="compile" depends="resolve" description="compile the sources">
+    <javac srcdir="${src.engine}" destdir="${dir.build}" source="8" includeAntRuntime="false">
+      <classpath refid="build.class.path"/>
     </javac>
-    <javac srcdir="${src-gui}" destdir="${build}" includeAntRuntime="false">
-      <classpath refid="project.class.path"/>
+    <javac srcdir="${src.gui}" destdir="${dir.build}" source="8" includeAntRuntime="false">
+      <classpath refid="build.class.path"/>
+    </javac>
+    <javac srcdir="${src.asdf}" destdir="${dir.build}" source="8" includeAntRuntime="false">
+      <classpath refid="build.class.path"/>
+    </javac>
+    <javac srcdir="${src.asdf.test}" destdir="${dir.build}" source="8" includeAntRuntime="false">
+      <classpath refid="build.class.path"/>
     </javac>
   </target>
 
-  <target name="dist" depends="compile"
-        description="generate the distribution">
-    <!-- Create the distribution directory -->
-    <mkdir dir="${dist}/lib"/>
-    <!-- Put everything in ${build} into the cuboid-packer.jar file -->
-    <jar jarfile="${dist}/lib/cuboid-packer.jar" basedir="${build}"/>
+  <target name="test.junit.launcher" depends="compile">
+    <junitlauncher haltOnFailure="true" printSummary="true">
+      <classpath refid="test.class.path"/>
+      <testclasses outputdir="${dir.build}/test-report">
+        <fileset dir="${dir.build}">
+          <include name="**/*Tests.class"/>
+        </fileset>
+        <listener type="legacy-xml" sendSysOut="true" sendSysErr="true"/>
+        <listener type="legacy-plain" sendSysOut="true" />
+      </testclasses>
+    </junitlauncher>
+  </target>
+
+  <target name="test" depends="test.junit.launcher" />
+
+  <target name="dist" depends="test" description="generate the distribution">
+    <mkdir dir="${dir.dist}/lib"/>
+    <jar jarfile="${dir.dist}/lib/cuboid-packer.jar" basedir="${dir.build}"/>
   </target>
 
   <target name="run" depends="dist">
     <java classname="packergui.Main" fork="true">
       <classpath refid="run.class.path"/>
     </java>
-  </target>
-
-  <target name="clean"
-        description="clean up">
-    <!-- Delete the ${build} and ${dist} directory trees -->
-    <delete dir="${build}"/>
-    <delete dir="${dist}"/>
   </target>
 </project>

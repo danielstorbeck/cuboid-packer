@@ -1,6 +1,7 @@
 eclipse-projects/CubePackingEngine/bin/
 eclipse-projects/PackerGui/bin/
-lib/*
-!lib/.gitkeep
+lib
 build
 dist
+jogl/*
+!jogl/README.txt
