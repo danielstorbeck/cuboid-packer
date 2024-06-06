@@ -11,7 +11,7 @@ I use the following setup:
 To run it you need the jogl fat jar.
 See the README in the jogl folder.
 
-##Roadmap
+## Roadmap
 
 - translate comments to english
 - write tests for the parts I don't understand any more
