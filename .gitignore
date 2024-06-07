@@ -1,5 +1,5 @@
-eclipse-projects/CubePackingEngine/bin/
-eclipse-projects/PackerGui/bin/
+CubePackingEngine/bin/
+PackerGui/bin/
 lib
 build
 dist
