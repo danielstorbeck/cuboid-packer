@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Cuboid-Packing-Engine" default="dist" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+  <description>
+    An engine for a graphical 3D cuboid packer tool in Java.
+  </description>
+
+  <!-- global properties -->
+  <property name="src.main.java" location="src/main/java"/>
+  <property name="src.test.java" location="src/test/java"/>
+  <property name="dir.lib" location="lib"/>
+  <property name="dir.build.main" location="build-main"/>
+  <property name="dir.build.test" location="build-test"/>
+  <property name="dir.dist" location="jar"/>
+  <property name="dir.test.report" location="test-report"/>
+  <property name="dir.dependency.report" location="dependency-report"/>
+
+  <path id="build.class.path">
+    <fileset dir="${dir.lib}"/>
+  </path>
+
+  <path id="test.class.path">
+    <path refid="build.class.path"/>
+    <pathelement location="${dir.build.main}"/>
+    <pathelement location="${dir.build.test}"/>
+  </path>
+
+  <target name="clean" description="clean up">
+    <delete dir="${dir.lib}"/>
+    <delete dir="${dir.build.main}"/>
+    <delete dir="${dir.build.test}"/>
+    <delete dir="${dir.dist}"/>
+    <delete dir="${dir.test.report}"/>
+    <delete dir="${dir.dependency.report}"/>
+  </target>
+
+  <target name="resolve" depends="clean" description="retrieve dependencies with ivy">
+    <mkdir dir="${dir.lib}"/>
+    <ivy:retrieve/>
+  </target>
+
+  <target name="report" depends="resolve" description="generate a report of dependencies">
+    <mkdir dir="${dir.dependency.report}"/>
+    <ivy:report todir="${dir.dependency.report}"/>
+  </target>
+
+  <target name="compile" depends="report" description="compile the sources">
+    <mkdir dir="${dir.build.main}"/>
+    <javac srcdir="${src.main.java}" destdir="${dir.build.main}" source="8" includeAntRuntime="false">
+      <classpath refid="build.class.path"/>
+    </javac>
+    <mkdir dir="${dir.build.test}"/>
+    <javac srcdir="${src.test.java}" destdir="${dir.build.test}" source="8" includeAntRuntime="false">
+      <classpath refid="test.class.path"/>
+    </javac>
+  </target>
+
+  <target name="test.junit.launcher" depends="compile">
+    <mkdir dir="${dir.test.report}"/>
+    <junitlauncher haltOnFailure="true" printSummary="true">
+      <classpath refid="test.class.path"/>
+      <testclasses outputdir="${dir.test.report}">
+        <fileset dir="${dir.build.test}">
+          <include name="**/*Tests.class"/>
+        </fileset>
+        <listener type="legacy-xml" sendSysOut="true" sendSysErr="true"/>
+        <listener type="legacy-plain" sendSysOut="true" />
+      </testclasses>
+    </junitlauncher>
+  </target>
+
+  <target name="test" depends="test.junit.launcher"/>
+
+  <target name="dist" depends="test" description="generate the distribution">
+    <mkdir dir="${dir.dist}"/>
+    <jar jarfile="${dir.dist}/cuboid-packing-engine.jar" basedir="${dir.build.main}"/>
+    <jar jarfile="${dir.dist}/cuboid-packing-engine-tests.jar" basedir="${dir.build.test}"/>
+  </target>
+</project>

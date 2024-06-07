@@ -1,0 +1,7 @@
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
+    <info organisation="org.d12k" module="cuboid-packing-engine"/>
+    <dependencies>
+      <dependency org="org.junit.jupiter" name="junit-jupiter" rev="5.10.2"/>
+      <dependency org="org.junit.platform" name="junit-platform-suite" rev="1.10.2"/>
+    </dependencies>
+</ivy-module>

@@ -1,4 +1,10 @@
-CubePackingEngine/bin/
+PackingEngine/bin
+PackingEngine/jar
+PackingEngine/lib
+PackingEngine/build-main
+PackingEngine/build-test
+PackingEngine/dependency-report
+PackingEngine/test-report
 PackerGui/bin/
 lib
 build
