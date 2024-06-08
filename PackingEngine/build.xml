@@ -13,6 +13,7 @@
   <property name="dir.dist" location="jar"/>
   <property name="dir.test.report" location="test-report"/>
   <property name="dir.dependency.report" location="dependency-report"/>
+  <property name="dir.project.dist" location="../dist"/>
 
   <path id="build.class.path">
     <fileset dir="${dir.lib}"/>
@@ -74,5 +75,7 @@
     <mkdir dir="${dir.dist}"/>
     <jar jarfile="${dir.dist}/cuboid-packing-engine.jar" basedir="${dir.build.main}"/>
     <jar jarfile="${dir.dist}/cuboid-packing-engine-tests.jar" basedir="${dir.build.test}"/>
+    <copy file="${dir.dist}/cuboid-packing-engine.jar" toDir="${dir.project.dist}"/>
+    <copy file="${dir.dist}/cuboid-packing-engine-tests.jar" toDir="${dir.project.dist}"/>
   </target>
 </project>

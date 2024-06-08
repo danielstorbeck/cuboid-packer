@@ -6,8 +6,8 @@ PackingEngine/build-test
 PackingEngine/dependency-report
 PackingEngine/test-report
 PackerGui/bin/
-lib
 build
-dist
+dist/*
+!dist/.gitkeep
 jogl/*
 !jogl/README.txt
